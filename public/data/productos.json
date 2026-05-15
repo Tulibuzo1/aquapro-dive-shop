@@ -1,0 +1,42 @@
+﻿[
+  {
+    "id": 1,
+    "nombre": "Máscara de buceo Cressi F1",
+    "precio": 34.95,
+    "categoria": "mascaras",
+    "descripcion": "Máscara de silicona negra, cristal templado, diseño compacto.",
+    "imagen": "https://www.cressi.es/archivos/imagenes_min/f1plataok.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Aletas Mares Avanti Quattro+",
+    "precio": 99.00,
+    "categoria": "aletas",
+    "descripcion": "Aletas abiertas de alto rendimiento con bungee, ideales para buceo exigente.",
+    "imagen": "https://cdn-mdb.head.com/CDN3/D/410003_BK/1/1820x2428/avanti-quattro-black.webp"
+  },
+  {
+    "id": 3,
+    "nombre": "Traje de neopreno 5mm SEAC",
+    "precio": 179.90,
+    "categoria": "trajes",
+    "descripcion": "Protección térmica para aguas frías, neopreno de alta calidad.",
+    "imagen": "https://b2b.seacsub.com/app/media/uploads/image_repository/7223/Club_1-137_Alessia_800.jpg"
+  },
+  {
+    "id": 4,
+    "nombre": "Computadora de buceo Cressi Leonardo",
+    "precio": 219.99,
+    "categoria": "computadoras",
+    "descripcion": "Pantalla clara, fácil manejo y modo dual de mezclas.",
+    "imagen": "https://www.cressi.es/archivos/imagenes_med/LEONARDO_negro_gris.jpg"
+  },
+  {
+    "id": 5,
+    "nombre": "Regulador Apeks ATX40 DS4 DIN",
+    "precio": 389.00,
+    "categoria": "reguladores",
+    "descripcion": "Máxima fiabilidad en aguas frías, con octopus ATX40 incluido.",
+    "imagen": "https://jonasdive.com/504-large_default/apeks-ds4-atx-40-pack-completo.jpg"
+  }
+]
