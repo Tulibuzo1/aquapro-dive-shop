@@ -38,5 +38,13 @@
     "categoria": "reguladores",
     "descripcion": "Máxima fiabilidad en aguas frías, con octopus ATX40 incluido.",
     "imagen": "https://jonasdive.com/504-large_default/apeks-ds4-atx-40-pack-completo.jpg"
+  },
+  {
+    "id": 6,
+    "nombre": "Chaleco Jacket Aqualung Wave",
+    "precio": 450.00,
+    "categoria": "chalecos",
+    "descripcion": "Chaleco compensador Aqualung Wave con sistema de flotabilidad integral, hebillas de liberación rápida y arneses ergonómicos. Ideal para buceo recreativo y técnico.",
+    "imagen": "https://es.aqualung.com/cdn/shop/files/20Grey_1_aad0681d-7207-4062-b518-b0302996cf4d.jpg?v=1767956603&width=600"
   }
 ]
