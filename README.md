@@ -187,8 +187,4 @@ src/
    - **Publish directory:** `dist`
 3. Deploy automático en cada push
 
----
 
-## Autor
-
-AquaPro Dive Shop - Proyecto final React, Talento Lab 2026
