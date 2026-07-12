@@ -1,6 +1,6 @@
 # AquaPro Dive Shop - Tienda de artículos de buceo
 
-E-commerce de equipamiento de buceo desarrollado con React, Firebase y Bootstrap. Proyecto final del curso de React - Talento Lab.
+E-commerce de equipamiento de buceo desarrollado con React, Firebase y Bootstrap. 
 
 ---
 
