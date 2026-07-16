@@ -74,14 +74,15 @@ const ProductProvider = ({ children }) => {
   }
 
   const updateProduct = async (id, updates) => {
+    const matchId = (p) => String(p.id) === String(id)
     if (useLocal) {
-      setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...updates } : p)))
+      setProducts(prev => prev.map(p => (matchId(p) ? { ...p, ...updates } : p)))
       return { success: true }
     }
     try {
       const productRef = doc(db, 'productos', id)
       await updateDoc(productRef, updates)
-      setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...updates } : p)))
+      setProducts(prev => prev.map(p => (matchId(p) ? { ...p, ...updates } : p)))
       return { success: true }
     } catch (err) {
       console.error('Error updating product:', err)
@@ -90,13 +91,14 @@ const ProductProvider = ({ children }) => {
   }
 
   const deleteProduct = async (id) => {
+    const matchId = (p) => String(p.id) === String(id)
     if (useLocal) {
-      setProducts(prev => prev.filter(p => p.id !== id))
+      setProducts(prev => prev.filter(p => !matchId(p)))
       return { success: true }
     }
     try {
       await deleteDoc(doc(db, 'productos', id))
-      setProducts(prev => prev.filter(p => p.id !== id))
+      setProducts(prev => prev.filter(p => !matchId(p)))
       return { success: true }
     } catch (err) {
       console.error('Error deleting product:', err)

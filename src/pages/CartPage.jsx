@@ -1,9 +1,10 @@
 ﻿import { useState } from 'react'
 import { useCart } from '../context/CartContext'
+import { useCoupons } from '../context/CouponContext'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
-import { FaTrash, FaShoppingBag, FaArrowLeft, FaCreditCard, FaCheck } from 'react-icons/fa'
+import { FaTrash, FaShoppingBag, FaArrowLeft, FaCreditCard, FaCheck, FaTicketAlt } from 'react-icons/fa'
 
 const CartTitle = styled.h2`
   font-weight: 800;
@@ -81,18 +82,97 @@ const RemoveButton = styled.button`
   }
 `
 
+const CouponRow = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.9rem 1.2rem;
+  background: var(--bg-card, #fff);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border, #d4dde6);
+  flex-wrap: wrap;
+
+  input {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.6rem 0.9rem;
+    border: 1.5px solid var(--border, #d4dde6);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--bg, #f0f4f8);
+    color: var(--text-h, #0c2d48);
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent, #0077b6);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+  }
+`
+
+const ApplyButton = styled.button`
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #2ec4b6, #00b4d8);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  &:hover { transform: translateY(-1px); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+`
+
+const CouponMsg = styled.span`
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: ${props => props.$ok ? '#2ec4b6' : '#e63946'};
+  width: 100%;
+  margin-top: 0.3rem;
+`
+
 const TotalSection = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
   padding: 1.1rem 1.5rem;
   background: linear-gradient(135deg, #023e8a, #0077b6);
   border-radius: var(--radius-sm);
   margin-bottom: 1.5rem;
-  font-size: 1.2rem;
   font-weight: 800;
   color: #fff;
   box-shadow: 0 4px 16px rgba(2, 62, 138, 0.25);
+`
+
+const TotalLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.05rem;
+`
+
+const TotalFinal = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.35rem;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  padding-top: 0.5rem;
+`
+
+const DiscountLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #7efcd0;
 `
 
 const ActionButton = styled.button`
@@ -126,11 +206,38 @@ const ActionButton = styled.button`
 
 const CartPage = () => {
   const { cartItems, removeFromCart, clearCart } = useCart()
+  const { validateCoupon } = useCoupons()
   const [completed, setCompleted] = useState(false)
-  const total = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
+  const [couponCode, setCouponCode] = useState('')
+  const [appliedCoupon, setAppliedCoupon] = useState(null)
+  const [couponMsg, setCouponMsg] = useState('')
+
+  const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
+  const discountAmount = appliedCoupon ? subtotal * (appliedCoupon.porcentaje / 100) : 0
+  const total = subtotal - discountAmount
+
+  const handleApplyCoupon = () => {
+    if (!couponCode.trim()) return
+    const result = validateCoupon(couponCode)
+    if (result.valid) {
+      setAppliedCoupon(result.coupon)
+      setCouponMsg(`Cupón "${result.coupon.codigo}" aplicado: ${result.coupon.porcentaje}% de descuento`)
+      setCouponCode('')
+    } else {
+      setAppliedCoupon(null)
+      setCouponMsg(result.error)
+    }
+  }
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null)
+    setCouponMsg('')
+  }
 
   const handleCheckout = () => {
     clearCart()
+    setAppliedCoupon(null)
+    setCouponMsg('')
     setCompleted(true)
   }
 
@@ -190,10 +297,45 @@ const CartPage = () => {
           </ItemRow>
         ))}
       </ul>
+
+      <CouponRow>
+        <FaTicketAlt style={{ color: 'var(--accent, #0077b6)', fontSize: '1.1rem' }} />
+        <input
+          type="text"
+          placeholder="Código de cupón"
+          value={couponCode}
+          onChange={e => { setCouponCode(e.target.value); setCouponMsg('') }}
+          onKeyDown={e => e.key === 'Enter' && handleApplyCoupon()}
+        />
+        {appliedCoupon ? (
+          <RemoveButton onClick={handleRemoveCoupon} style={{ fontSize: '0.85rem', padding: '0.5rem 0.9rem' }}>
+            Quitar
+          </RemoveButton>
+        ) : (
+          <ApplyButton onClick={handleApplyCoupon} disabled={!couponCode.trim()}>
+            Aplicar
+          </ApplyButton>
+        )}
+        {couponMsg && <CouponMsg $ok={!!appliedCoupon}>{couponMsg}</CouponMsg>}
+      </CouponRow>
+
       <TotalSection>
-        <span>Total:</span>
-        <span>USD ${total.toFixed(2)}</span>
+        <TotalLine>
+          <span>Subtotal:</span>
+          <span>USD ${subtotal.toFixed(2)}</span>
+        </TotalLine>
+        {appliedCoupon && (
+          <DiscountLine>
+            <span>Descuento ({appliedCoupon.porcentaje}%):</span>
+            <span>- USD ${discountAmount.toFixed(2)}</span>
+          </DiscountLine>
+        )}
+        <TotalFinal>
+          <span>Total:</span>
+          <span>USD ${total.toFixed(2)}</span>
+        </TotalFinal>
       </TotalSection>
+
       <div className="d-flex gap-2 flex-wrap">
         <ActionButton $variant="danger" onClick={clearCart}>
           <FaTrash /> Vaciar carrito

@@ -10,9 +10,11 @@ import EditarProducto from './pages/EditarProducto'
 import Nosotros from './pages/Nosotros'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import CuponesPage from './pages/CuponesPage'
 import CartProvider from './context/CartContext'
 import ProductProvider from './context/ProductContext'
 import AuthProvider from './context/AuthContext'
+import CouponProvider from './context/CouponContext'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 
 function App() {
@@ -20,7 +22,8 @@ function App() {
     <HelmetProvider>
       <AuthProvider>
         <CartProvider>
-          <ProductProvider>
+          <CouponProvider>
+            <ProductProvider>
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Layout />}>
@@ -37,10 +40,14 @@ function App() {
                   <Route path="editar-producto/:id" element={
                     <ProtectedRoute><EditarProducto /></ProtectedRoute>
                   } />
+                  <Route path="cupones" element={
+                    <ProtectedRoute><CuponesPage /></ProtectedRoute>
+                  } />
                 </Route>
               </Routes>
             </BrowserRouter>
-          </ProductProvider>
+            </ProductProvider>
+          </CouponProvider>
         </CartProvider>
       </AuthProvider>
     </HelmetProvider>

@@ -2,7 +2,7 @@
 import { useAuth } from '../../context/AuthContext'
 import CartWidget from '../CartWidget/CartWidget'
 import styled from 'styled-components'
-import { FaHome, FaBox, FaPlus, FaUsers, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaEnvelope } from 'react-icons/fa'
+import { FaHome, FaBox, FaPlus, FaUsers, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaEnvelope, FaTicketAlt } from 'react-icons/fa'
 
 const Nav = styled.nav`
   background: linear-gradient(180deg, #0a1628 0%, #0f2035 100%) !important;
@@ -67,9 +67,14 @@ const NavBar = () => {
               <Link className="nav-link" to="/nosotros"><NavIcon><FaUsers /></NavIcon>Nosotros</Link>
             </li>
             {user && (
-              <li className="nav-item">
-                <Link className="nav-link" to="/nuevo-producto"><NavIcon><FaPlus /></NavIcon>Nuevo Producto</Link>
-              </li>
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/nuevo-producto"><NavIcon><FaPlus /></NavIcon>Nuevo Producto</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/cupones"><NavIcon><FaTicketAlt /></NavIcon>Cupones</Link>
+                </li>
+              </>
             )}
           </ul>
           <div className="d-flex align-items-center gap-2">
